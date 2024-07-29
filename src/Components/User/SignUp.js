@@ -1,29 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useDispatch } from 'react-redux';
-import { registerUser } from '../../features/user/userSlice';
-import { useUser } from '../../Hooks/useUser';
-import EnterOtp from '../Popup/EnterOtp'; 
+import React, { useEffect, useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Link from "@mui/material/Link";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../features/user/userSlice";
+import { useUser } from "../../Hooks/useUser";
+import EnterOtp from "../Popup/EnterOtp";
+import { useNavigate } from "react-router-dom";
+
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://kmvishnu.github.io/angular-app">
         Webworms
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -31,16 +38,17 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isNameValid, setIsNameValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  const [showEnterOtp, setShowEnterOtp] = useState(false); 
+  const [showEnterOtp, setShowEnterOtp] = useState(false);
+  const navigate = useNavigate();
 
-  const { loading, sendOtp, verifyOtp } = useUser(); 
+  const { loading, sendOtp, verifyOtp } = useUser();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -71,18 +79,18 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userData = {
-      email: data.get('email'),
-      password: data.get('password'),
-      name: data.get('name'),
+      email: data.get("email"),
+      password: data.get("password"),
+      name: data.get("name"),
     };
     dispatch(registerUser(userData));
     try {
       const response = await sendOtp(email);
-      if (response.status === 'success') {
-        setShowEnterOtp(true); 
+      if (response.status === "success") {
+        setShowEnterOtp(true);
       }
     } catch (error) {
-      console.error('Error sending OTP:', error);
+      console.error("Error sending OTP:", error);
     }
   };
 
@@ -91,9 +99,12 @@ export default function SignUp() {
       const response = await verifyOtp(email, otp);
       return response;
     } catch (error) {
-      console.error('Error verifying OTP:', error);
+      console.error("Error verifying OTP:", error);
       throw error;
     }
+  };
+  const handleLogout = () => {
+    navigate("/register");
   };
 
   return (
@@ -103,18 +114,23 @@ export default function SignUp() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -129,7 +145,9 @@ export default function SignUp() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   error={!isNameValid && name.length > 0}
-                  helperText={!isNameValid && name.length > 0 ? 'Invalid name format' : ''}
+                  helperText={
+                    !isNameValid && name.length > 0 ? "Invalid name format" : ""
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -144,7 +162,11 @@ export default function SignUp() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={!isEmailValid && email.length > 0}
-                  helperText={!isEmailValid && email.length > 0 ? 'Invalid email format' : ''}
+                  helperText={
+                    !isEmailValid && email.length > 0
+                      ? "Invalid email format"
+                      : ""
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -160,7 +182,11 @@ export default function SignUp() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={!isPasswordValid && password.length > 0}
-                  helperText={!isPasswordValid && password.length > 0 ? 'Password must be between 4 to 20 characters' : ''}
+                  helperText={
+                    !isPasswordValid && password.length > 0
+                      ? "Password must be between 4 to 20 characters"
+                      : ""
+                  }
                 />
               </Grid>
             </Grid>
@@ -171,13 +197,17 @@ export default function SignUp() {
               sx={{ mt: 3, mb: 2 }}
               disabled={!isFormValid || loading} // Disable the button during loading
             >
-              {loading ? 'Loading...' : 'Sign Up'}
+              {loading ? "Loading..." : "Sign Up"}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="react-app/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+                <Typography
+                  variant="body2"
+                  onClick={() => navigate('/register')}
+                  sx={{ cursor: 'pointer', color: 'blue' }}
+                >
+                  {"Already have an account? Sign in"}
+                </Typography>
               </Grid>
             </Grid>
           </Box>
@@ -189,7 +219,7 @@ export default function SignUp() {
             onClose={() => setShowEnterOtp(false)}
             onVerifyOtp={handleVerifyOtp}
           />
-        )} 
+        )}
       </Container>
     </ThemeProvider>
   );
