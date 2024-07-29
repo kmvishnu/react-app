@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Home from './Components/Home/Home';
 import PrivateRoute from './Components/Common/PrivateRoute';
 import { clearToken } from './features/user/userSlice';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import SignIn from './Components/User/SignIn';
 import SignUp from './Components/User/SignUp';
+import NotFound from './Components/Common/NotFound'; // Create a NotFound component
 
 const isTokenValid = (token) => {
   try {
@@ -44,6 +45,7 @@ function App() {
           <Route path="/home" element={<Home />} />
         </Route>
         <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </Router>
   );
