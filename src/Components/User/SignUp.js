@@ -203,7 +203,7 @@ export default function SignUp() {
               <Grid item>
                 <Typography
                   variant="body2"
-                  onClick={() => navigate('/register')}
+                  onClick={() => navigate('/login')}
                   sx={{ cursor: 'pointer', color: 'blue' }}
                 >
                   {"Already have an account? Sign in"}
