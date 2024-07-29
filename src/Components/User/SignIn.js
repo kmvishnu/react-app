@@ -67,7 +67,6 @@ export default function SignIn() {
       const response = await loginUser(userData);
       if (response.status === 'success') {
         navigate('/home');
-
       }
     } catch (error) {
       console.error('Error logging in:', error);
@@ -137,7 +136,7 @@ export default function SignIn() {
             )}
             <Grid container>
               <Grid item>
-                <Link href="/register" variant="body2">
+                <Link href="/react-app/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
